@@ -19,9 +19,18 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(HelloQt
     mainwindow.ui
+    mainwindow.h
     mainwindow.cpp
     main.cpp
-    mainwindow.h
 )
 
 target_link_libraries(HelloQt Qt5::Widgets)
+
+add_executable(QtTest 
+    tests/main.cpp
+    tests/test_qstring.cpp
+    tests/test_signal.cpp
+    tests/counter.h  # The header file should be added, otherwise there will be build errors.
+)
+
+target_link_libraries(QtTest PRIVATE Qt5::Core Qt5::Widgets)
