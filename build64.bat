@@ -1,6 +1,6 @@
 @echo off 
 set config=Release
-set folder=_build-x64
+set folder=_build64
 
 if "%1" == "clean" goto CLEAN
 
