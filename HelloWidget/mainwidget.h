@@ -9,11 +9,14 @@ class MainWidget : public QWidget
     Q_OBJECT
 
 public:
-	MainWidget(QWidget *parent = nullptr);
+    explicit MainWidget(QWidget *parent = nullptr);
     ~MainWidget();
 
-private:
-    QPushButton* button_;
-    QTextBrowser*  textBrowser_;
-};
+private slots:
+    void handleButton();
+    void targetButton();
 
+private:
+    QPushButton *button_;
+    QTextBrowser *textBrowser_;
+};
