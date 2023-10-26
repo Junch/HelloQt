@@ -18,3 +18,4 @@ endif()
 
 add_subdirectory(HelloQt)
 add_subdirectory(HelloWidget)
+add_subdirectory(MemoryLeak)
