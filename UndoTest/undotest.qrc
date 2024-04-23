@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/undoTest">
+        <file>Resources/add.png</file>
+        <file>Resources/redo.png</file>
+        <file>Resources/undo.png</file>
+    </qresource>
+</RCC>
