@@ -1,6 +1,5 @@
 ﻿#include "mycolorseldelegate.h"
 #include <QColorDialog>
-#include <QDesktopWidget>
 #include <QApplication>
 MyColorSelDelegate::MyColorSelDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
@@ -26,7 +25,7 @@ void MyColorSelDelegate::setEditorData(QWidget *editor, const QModelIndex &index
 void MyColorSelDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QColorDialog* dlg = static_cast<QColorDialog*>(editor);
-    model->setData(index, dlg->selectedColor(), Qt::BackgroundColorRole);
+    model->setData(index, dlg->selectedColor(), Qt::BackgroundRole);
 }
 
 void MyColorSelDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const

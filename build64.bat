@@ -9,7 +9,7 @@ pushd %folder% >nul
 
 @echo on
 
-cmake -A x64 .. -DCMAKE_PREFIX_PATH="C:/Qt/Qt5.6.3/5.6.3/msvc2015_64/lib/cmake/Qt5"
+cmake -A x64 ..
 cmake --build . --config %config%
 
 @echo off

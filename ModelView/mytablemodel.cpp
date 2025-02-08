@@ -46,7 +46,7 @@ QVariant MyTableModel::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole || role == Qt::EditRole) {
             return m_data[index.row()*m_columnNum + index.column()]->content;//数据的呈现形式
         }
-        else if (role == Qt::BackgroundColorRole) {
+        else if (role == Qt::BackgroundRole) {
             return m_data[index.row()*m_columnNum + index.column()]->bgColor;//单元格背景色
         }
         else if (role == Qt::TextAlignmentRole) {    //对其方式
@@ -80,7 +80,7 @@ bool MyTableModel::setData(const QModelIndex &index, const QVariant &value, int 
             emit dataChanged(index, index, QVector<int>() << role);                     //发送信号触发刷新
             return true;
         }
-        if (index.isValid() && role == Qt::BackgroundColorRole)
+        if (index.isValid() && role == Qt::BackgroundRole)
         {
             m_data[index.row()*m_columnNum + index.column()]->bgColor = value.value<QColor>();
             emit dataChanged(index, index, QVector<int>() << role);                     //发送信号触发刷新
