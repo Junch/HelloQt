@@ -19,8 +19,8 @@ elseif(APPLE)
     qt_add_executable(HelloQt MACOSX_BUNDLE "" ${app_icon_macos})
     set_target_properties(HelloQt PROPERTIES MACOSX_BUNDLE TRUE)
     set_target_properties(HelloQt PROPERTIES MACOSX_BUNDLE_ICON_FILE icon.icns)
-    set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     set_target_properties(HelloQt PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "com.yourcompany.HelloQt")
+    set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
 target_sources(HelloQt

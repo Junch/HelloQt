@@ -18,6 +18,7 @@ endif()
 
 add_subdirectory(HelloQt)
 add_subdirectory(HelloWidget)
+add_subdirectory(HelloOGL)
 add_subdirectory(MemoryLeak)
 add_subdirectory(ModelView)
 add_subdirectory(UndoTest)
