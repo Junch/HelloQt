@@ -7,11 +7,11 @@
             ],
             "defines": [],
             "macFrameworkPath": [
-                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX14.5.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/usr/bin/clang",
-            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
-            "cStandard": "c11",
+            "compileCommands": "${workspaceFolder}/_build/compile_commands.json",
+            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"
         }
