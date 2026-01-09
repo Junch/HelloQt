@@ -22,6 +22,7 @@ protected:
 private:
     QWidget *m_titleBar{};
     QLabel *m_titleLabel{};
+    QToolButton *m_menuBtn{};
     QToolButton *m_minBtn{};
     QToolButton *m_maxBtn{};
     QToolButton *m_closeBtn{};

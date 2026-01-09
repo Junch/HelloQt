@@ -9,6 +9,9 @@
 #include <QStyle>
 #include <QApplication>
 #include <QSizePolicy>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
 
 #ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
@@ -31,6 +34,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     m_titleLabel = new QLabel("Custom Title Bar Example", m_titleBar);
     m_titleLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+
+    m_menuBtn = new QToolButton(m_titleBar);
+    m_menuBtn->setText("☰"); // ≡
+    auto menu = new QMenu(m_menuBtn);
+    auto aboutAct = menu->addAction("About");
+    connect(aboutAct, &QAction::triggered, [this]() {
+        QMessageBox::about(this, "About", "Custom Title Bar Example\nVersion 1.0");
+    });
+    auto checkAct = menu->addAction("Checking for update");
+    connect(checkAct, &QAction::triggered, [this]() {
+        QMessageBox::information(this, "Update", "Checking for update...");
+    });
+    m_menuBtn->setMenu(menu);
+    m_menuBtn->setPopupMode(QToolButton::InstantPopup);
+    m_menuBtn->setToolButtonStyle(Qt::ToolButtonTextOnly);
+    m_menuBtn->setStyleSheet("QToolButton::menu-indicator { image: none; }");
+
     m_minBtn = new QToolButton(m_titleBar);
     m_maxBtn = new QToolButton(m_titleBar);
     m_closeBtn = new QToolButton(m_titleBar);
@@ -50,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     titleLayout->setContentsMargins(6, 0, 6, 0);
     titleLayout->addWidget(m_titleLabel);
     titleLayout->addStretch();
+    titleLayout->addWidget(m_menuBtn);
     titleLayout->addWidget(m_minBtn);
     titleLayout->addWidget(m_maxBtn);
     titleLayout->addWidget(m_closeBtn);
