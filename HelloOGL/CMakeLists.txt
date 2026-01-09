@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 set(TARGET_NAME HelloOGL)
 project(${TARGET_NAME} VERSION 1.0.0 LANGUAGES CXX)
 
@@ -15,7 +15,7 @@ message("PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR}")
 message("CMAKE_CURRENT_LIST_FILE ${CMAKE_CURRENT_LIST_FILE}")
 message("CMAKE_CURRENT_LIST_LINE ${CMAKE_CURRENT_LIST_LINE}")
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTOMOC ON)
@@ -24,6 +24,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt6 COMPONENTS Core Gui Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
+find_package(OpenGL REQUIRED)
 
 file(GLOB SRC_FILES "*.h*" "*.c*" )
 set(TS_FILE ${PROJECT_BINARY_DIR}/${TARGET_NAME}_zh_CN.ts)
@@ -49,13 +50,30 @@ elseif(APPLE) # Add macOS specific icon settings
     )
 endif()
 
-target_link_libraries(${TARGET_NAME} PUBLIC Qt::Widgets Qt::OpenGLWidgets Qt::OpenGL)
+target_link_libraries(${TARGET_NAME} PUBLIC Qt::Widgets Qt::OpenGLWidgets Qt::OpenGL OpenGL::GL)
 if(WIN32)
     add_compile_options(/utf-8)
     set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 endif()
-add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt::Core> $<TARGET_FILE_DIR:${TARGET_NAME}>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt::Gui> $<TARGET_FILE_DIR:${TARGET_NAME}>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt::Widgets> $<TARGET_FILE_DIR:${TARGET_NAME}>
-)
+# add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt::Core> $<TARGET_FILE_DIR:${TARGET_NAME}>
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt::Gui> $<TARGET_FILE_DIR:${TARGET_NAME}>
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Qt::Widgets> $<TARGET_FILE_DIR:${TARGET_NAME}>
+# )
+
+# Deploy Qt dependencies
+if(WIN32)
+    get_target_property(_qmake_executable Qt6::qmake IMPORTED_LOCATION)
+    get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
+    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+    
+    if(WINDEPLOYQT_EXECUTABLE)
+        add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+            COMMAND "${WINDEPLOYQT_EXECUTABLE}"
+                    --no-compiler-runtime
+                    --no-translations
+                    "$<TARGET_FILE:${TARGET_NAME}>"
+            COMMENT "Deploying Qt libraries"
+        )
+    endif()
+endif()

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.15)
 project(LearnQt)
 
 set(CMAKE_CONFIGURATION_TYPES Debug Release)

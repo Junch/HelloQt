@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "default-ninja",
+      "displayName": "Default config with Ninja",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+    ,
+    {
+      "name": "visual-studio-2022",
+      "displayName": "Visual Studio 2022 (MSBuild, x64)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default-ninja-build",
+      "configurePreset": "default-ninja"
+    }
+    ,
+    {
+      "name": "default-msvc-build",
+      "configurePreset": "visual-studio-2022",
+      "configuration": "Debug"
+    }
+  ]
+}

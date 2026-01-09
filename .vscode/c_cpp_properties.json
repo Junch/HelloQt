@@ -10,10 +10,39 @@
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX14.5.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/usr/bin/clang",
-            "compileCommands": "${workspaceFolder}/_build/compile_commands.json",
-            "cStandard": "c17",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/build/**",
+                "${env:Qt6_DIR}/include",
+                "${env:Qt6_DIR}/include/QtWidgets",
+                "${env:Qt6_DIR}/include/QtGui",
+                "${env:Qt6_DIR}/include/QtCore"
+            ],
+            "defines": [
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "cl.exe",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/build",
+                    "${env:Qt6_DIR}/include",
+                    "C:/Qt/*/msvc*/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
         }
     ],
     "version": 4
