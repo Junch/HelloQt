@@ -12,13 +12,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QMessageBox>
-
-#ifdef _WIN32
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#endif
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -30,7 +24,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     m_titleBar->setObjectName("titleBar");
 
     m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_titleBar->setFixedHeight(30);
+	int titlebarHeight = 30;
+    m_titleBar->setFixedHeight(titlebarHeight);
+
+    m_iconLabel = new QLabel(m_titleBar);
+    m_iconLabel->setScaledContents(true);
+    QPixmap pix(":/icons/app.png");
+    if (!pix.isNull()) {
+        int iconSize = qMax(16, titlebarHeight - 6); // use the known titlebar fixed height
+        m_iconLabel->setPixmap(pix.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        m_iconLabel->setFixedSize(iconSize, iconSize);
+    }
+    m_iconLabel->setContentsMargins(0, 0, 0, 0);
 
     m_titleLabel = new QLabel("Custom Title Bar Example", m_titleBar);
     m_titleLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
@@ -67,7 +72,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(m_closeBtn, &QToolButton::clicked, this, &MainWindow::close);
 
     auto titleLayout = new QHBoxLayout(m_titleBar);
-    titleLayout->setContentsMargins(6, 0, 6, 0);
+    titleLayout->setContentsMargins(1, 0, 6, 0);
+    titleLayout->addWidget(m_iconLabel);
     titleLayout->addWidget(m_titleLabel);
     titleLayout->addStretch();
     titleLayout->addWidget(m_menuBtn);

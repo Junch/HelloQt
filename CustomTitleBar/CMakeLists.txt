@@ -3,11 +3,13 @@ project(CustomTitleBar)
 
 find_package(Qt6 COMPONENTS Widgets REQUIRED)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 add_executable(CustomTitleBar
     main.cpp
     mainwindow.cpp
     mainwindow.h
+    CustomTitleBar.qrc
 )
 
 target_link_libraries(CustomTitleBar PRIVATE Qt6::Widgets)
