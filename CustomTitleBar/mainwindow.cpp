@@ -1,0 +1,115 @@
+#include "mainwindow.h"
+
+#include <QWidget>
+#include <QLabel>
+#include <QToolButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QMouseEvent>
+#include <QStyle>
+#include <QApplication>
+#include <QSizePolicy>
+
+#ifdef _WIN32
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#endif
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+{
+    // Remove native title bar
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);
+
+    // Title bar
+    m_titleBar = new QWidget(this);
+    m_titleBar->setObjectName("titleBar");
+
+    m_titleBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_titleBar->setFixedHeight(30);
+
+    m_titleLabel = new QLabel("Custom Title Bar Example", m_titleBar);
+    m_titleLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    m_minBtn = new QToolButton(m_titleBar);
+    m_maxBtn = new QToolButton(m_titleBar);
+    m_closeBtn = new QToolButton(m_titleBar);
+
+    m_minBtn->setText("─"); // -
+    m_maxBtn->setText("☐");
+    m_closeBtn->setText("✕");
+
+    connect(m_minBtn, &QToolButton::clicked, this, &MainWindow::showMinimized);
+    connect(m_maxBtn, &QToolButton::clicked, [this]() {
+        if (isMaximized) { showNormal(); isMaximized = false; m_maxBtn->setText("☐"); }
+        else { showMaximized(); isMaximized = true; m_maxBtn->setText("❐"); }
+    });
+    connect(m_closeBtn, &QToolButton::clicked, this, &MainWindow::close);
+
+    auto titleLayout = new QHBoxLayout(m_titleBar);
+    titleLayout->setContentsMargins(6, 0, 6, 0);
+    titleLayout->addWidget(m_titleLabel);
+    titleLayout->addStretch();
+    titleLayout->addWidget(m_minBtn);
+    titleLayout->addWidget(m_maxBtn);
+    titleLayout->addWidget(m_closeBtn);
+
+    // Central content
+    auto central = new QWidget(this);
+    auto vlay = new QVBoxLayout(central);
+    vlay->setContentsMargins(0, 0, 0, 0);
+    vlay->setSpacing(0);
+    vlay->addWidget(m_titleBar);
+
+    auto content = new QLabel("Main Window Content", central);
+    content->setAlignment(Qt::AlignCenter);
+    vlay->addWidget(content, 1);
+
+    setCentralWidget(central);
+
+    // Styles
+    setStyleSheet(R"(
+        #titleBar { background: #2d2d30; color: #ffffff; }
+        #titleBar > QLabel { color: #ffffff; font-weight: bold; padding-left: 6px; font-size: 13px; }
+        QToolButton { background: transparent; color: #ffffff; border: none; min-width: 34px; }
+        QToolButton:hover { background: rgba(255,255,255,0.06); }
+    )");
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton && event->pos().y() <= m_titleBar->height()) {
+        m_dragging = true;
+        m_dragPos = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        event->accept();
+    } else {
+        QMainWindow::mousePressEvent(event);
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (m_dragging && (event->buttons() & Qt::LeftButton) && !isMaximized) {
+        move(event->globalPosition().toPoint() - m_dragPos);
+        event->accept();
+    } else {
+        QMainWindow::mouseMoveEvent(event);
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_dragging = false;
+    QMainWindow::mouseReleaseEvent(event);
+}
+
+void MainWindow::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (event->pos().y() <= m_titleBar->height()) {
+        if (isMaximized) { showNormal(); isMaximized = false; m_maxBtn->setText("☐"); }
+        else { showMaximized(); isMaximized = true; m_maxBtn->setText("❐"); }
+        event->accept();
+    } else {
+        QMainWindow::mouseDoubleClickEvent(event);
+    }
+}
