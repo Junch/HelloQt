@@ -14,6 +14,14 @@ add_executable(CustomTitleBar
 
 target_link_libraries(CustomTitleBar PRIVATE Qt6::Widgets)
 
+# Embed app icon into Windows executable if available
+if(WIN32)
+    set(APP_ICON_RC "${CMAKE_CURRENT_SOURCE_DIR}/CustomTitleBar.rc")
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/icons/app.ico")
+        target_sources(CustomTitleBar PRIVATE ${APP_ICON_RC})
+    endif()
+endif()
+
 set_target_properties(CustomTitleBar PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
