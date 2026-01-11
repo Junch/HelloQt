@@ -9,6 +9,8 @@ add_executable(CustomTitleBar
     main.cpp
     mainwindow.cpp
     mainwindow.h
+    framelesswindow.cpp
+    framelesswindow.h
     CustomTitleBar.qrc
 )
 
