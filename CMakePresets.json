@@ -35,5 +35,11 @@
       "configurePreset": "visual-studio-2022",
       "configuration": "Debug"
     }
+    ,
+    {
+      "name": "default-msvc-release-build",
+      "configurePreset": "visual-studio-2022",
+      "configuration": "Release"
+    }
   ]
 }
