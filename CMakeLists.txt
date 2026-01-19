@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.15)
 project(LearnQt)
 
+set(WINRT_VERSION "2.0.250303.1")
+
+if(WIN32)
+    if(NOT EXISTS "${CMAKE_SOURCE_DIR}/packages/Microsoft.Windows.CppWinRT.${WINRT_VERSION}")
+        execute_process(
+            COMMAND "${CMAKE_SOURCE_DIR}/tools/nuget.exe" install Microsoft.Windows.CppWinRT -Version ${WINRT_VERSION} -OutputDirectory "${CMAKE_SOURCE_DIR}/packages"
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        )
+    endif()
+endif()
+
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
